@@ -1,16 +1,16 @@
 
-
+import classes from './component.module.css';
 
 export function Component () {
   return (
-    <div>
+    <div className={classes.com1}>
       Component
     </div>
   )
 }
 export function Component2 () {
   return (
-    <div>
+    <div className={classes.com2}>
       Component2
     </div>
   )
