@@ -11,7 +11,7 @@ const Modal = (
   }) => {
   return (
     <>
-      <div className={classes.modalWrapper} onClick={handleOpen}></div>
+      <div className={classes.modalWrapper}></div>
       <div className={classes.modalContent}>
         <button onClick={handleOpen} className={classes.btn}>Закрыть</button>
         <Input
