@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import classes from './todo.module.css';
-import Button from '../Button/Button';
 import ButtonAction from '../ButtonAction/ButtonAction';
 
 

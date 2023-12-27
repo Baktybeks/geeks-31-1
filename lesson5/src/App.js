@@ -2,6 +2,7 @@ import './App.css';
 import Modal from './components/Modal/Modal';
 import { useEffect, useState } from 'react';
 import List from './components/List/List';
+import Pagination from './components/Pagination/Pagination';
 
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const [ newTask, setNewTask ] = useState('');
   const [ tasks, setTasks ] = useState([]);
   console.log(tasks);
+
   const handleOpen = () => {
     setShow(!show);
   };
@@ -33,7 +35,7 @@ function App() {
   };
 
   const handleEdit = (editTodo) => {
-    tasks.map(task => {
+    tasks?.map(task => {
       if (task.id === editTodo.id) {
         return task.title = editTodo.title;
       }
@@ -49,22 +51,47 @@ function App() {
     });
     setTasks([ ...tasks ]);
   };
-  useEffect(() => {
-    const myLocalList = JSON.parse(localStorage.getItem('tasks'));
-    if (myLocalList === null) {
-      return localStorage.setItem('tasks', JSON.stringify(tasks));
-    }
-    if (myLocalList.length !== 0) {
-      setTasks(myLocalList);
-    }
-  }, []);
 
-  useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [ tasks ]);
+  const BASE_URL = 'https://jsonplaceholder.typicode.com/'
+  const getTodos = async (endpoint) => {
+    const data = await fetch(BASE_URL + endpoint)
+    console.log(data);
+    const todos =await (data.json())
+    setTasks(todos);
+    return todos
+  }
+
+  const limit = 10;
+  const [offset, setOffset] = useState(1)
+  const page = Math.floor(offset/limit)+1
+  const handlePrev = () => {
+    setOffset(prev=> prev  - limit)
+  }
+
+  const handleNext = () => {
+    setOffset(prev => prev + limit)
+  }
+  useEffect(()=> {
+    getTodos(`todos?_limit=${limit}&_start=${offset}`)
+  },[offset])
+
+  // useEffect(() => {
+  //   const myLocalList = JSON.parse(localStorage.getItem('tasks'));
+  //   if (myLocalList === null) {
+  //     return localStorage.setItem('tasks', JSON.stringify(tasks));
+  //   }
+  //   if (myLocalList.length !== 0) {
+  //     setTasks(myLocalList);
+  //   }
+  // }, []);
+  //
+  // useEffect(() => {
+  //   localStorage.setItem('tasks', JSON.stringify(tasks));
+  // }, [ tasks ]);
 
   return (
     <div className="App">
+
       <button className="btn" onClick={handleOpen}>Открыть</button>
       {show &&
         <Modal
@@ -79,6 +106,7 @@ function App() {
         handleEdit={handleEdit}
         handleDone={handleDone}
       />
+      <Pagination page={page} handlePrev={handlePrev} handleNext={handleNext}/>
     </div>
   );
 }
