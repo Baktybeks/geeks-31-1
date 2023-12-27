@@ -3,7 +3,12 @@ import classes from './modal.module.css';
 import Input from '../Input/Input';
 
 
-const Modal = ({handleOpen, handleTextInput,handleAdd}) => {
+const Modal = (
+  {
+    handleOpen,
+    handleTextInput,
+    handleAdd
+  }) => {
   return (
     <>
       <div className={classes.modalWrapper} onClick={handleOpen}></div>
